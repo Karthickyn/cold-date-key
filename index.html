@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Cold Date – Answer Key</title>
+<meta name="description" content="Official answer key and clue notes for the puzzle book The Cold Date.">
+<style>
+  :root{--bg:#111;--panel:#1b1b1b;--ink:#f2efe8;--mute:#a8a49a;--red:#c0282f;--line:#333}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+  header{max-width:720px;margin:0 auto;padding:40px 16px 16px;text-align:center}
+  .tag{letter-spacing:.2em;font-size:12px;color:var(--red);font-weight:700;text-transform:uppercase}
+  h1{margin:8px 0 6px;font:700 clamp(28px,7vw,44px)/1.1 Georgia,serif;letter-spacing:.03em}
+  p.sub{margin:0 auto;color:var(--mute);max-width:520px}
+  .warn{max-width:520px;margin:18px auto 0;padding:10px 14px;border:1px solid var(--line);border-left:3px solid var(--red);background:var(--panel);border-radius:6px;text-align:left;font-size:14px;color:var(--mute)}
+  .btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin:24px 0 8px}
+  .btn{display:inline-block;padding:12px 22px;border-radius:8px;font-weight:600;text-decoration:none;border:1px solid var(--red);cursor:pointer;font-size:16px}
+  .primary{background:var(--red);color:#fff}
+  .ghost{background:transparent;color:var(--ink)}
+  #viewer{max-width:760px;margin:24px auto 60px;padding:0 12px}
+  #status{text-align:center;color:var(--mute);padding:20px}
+  .page{background:#fff;margin:0 auto 14px;box-shadow:0 2px 12px #000a;max-width:100%;position:relative}
+  .page canvas{display:block;width:100%;height:auto}
+  .ph{width:100%;background:#fff}
+  footer{text-align:center;color:var(--mute);font-size:13px;padding:0 16px 40px}
+</style>
+</head>
+<body>
+<header>
+  <div class="tag">Case file · Answer key</div>
+  <h1>THE COLD DATE</h1>
+  <p class="sub">Clue notes, struck-out dates and word-search solutions. Stuck? Read it here or save a copy.</p>
+  <div class="warn"><strong>Spoiler warning:</strong> this key reveals the final date and the killer's name. Try the puzzles first!</div>
+  <div class="btns">
+    <a class="btn primary" href="The_Cold_Date_Answer_Key.pdf" download>Download PDF</a>
+    <a class="btn ghost" href="The_Cold_Date_Answer_Key.pdf" target="_blank" rel="noopener">Open in new tab</a>
+  </div>
+</header>
+<main id="viewer"><div id="status">Loading the answer key…</div></main>
+<footer>© The Cold Date. Page numbers in the key follow the book's printed pages.</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script>
+(function(){
+  var URL_PDF = 'The_Cold_Date_Answer_Key.pdf';
+  var box = document.getElementById('viewer'), status = document.getElementById('status');
+  function fail(){
+    box.innerHTML = '<div id="status">The in-page viewer could not load. Please use <a style="color:#fff" href="'+URL_PDF+'" target="_blank" rel="noopener">Open in new tab</a> or the Download button above.</div>';
+  }
+  if (!window.pdfjsLib) { fail(); return; }
+  pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+  pdfjsLib.getDocument(URL_PDF).promise.then(function(pdf){
+    status.remove();
+    var obs = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(!e.isIntersecting) return;
+        var div = e.target; obs.unobserve(div); render(pdf, +div.dataset.n, div);
+      });
+    }, {rootMargin:'800px 0px'});
+    pdf.getPage(1).then(function(p0){
+      var vp = p0.getViewport({scale:1}), ratio = vp.height/vp.width;
+      for (var n=1; n<=pdf.numPages; n++){
+        var div = document.createElement('div');
+        div.className = 'page'; div.dataset.n = n;
+        var ph = document.createElement('div'); ph.className='ph'; ph.style.paddingTop = (ratio*100)+'%';
+        div.appendChild(ph); box.appendChild(div); obs.observe(div);
+      }
+    });
+  }).catch(fail);
+  function render(pdf, n, div){
+    pdf.getPage(n).then(function(page){
+      var w = div.clientWidth || 600, dpr = Math.min(window.devicePixelRatio||1, 2);
+      var base = page.getViewport({scale:1}), scale = (w/base.width)*dpr;
+      var vp = page.getViewport({scale:scale});
+      var c = document.createElement('canvas'); c.width = vp.width; c.height = vp.height;
+      page.render({canvasContext:c.getContext('2d'), viewport:vp}).promise.then(function(){
+        div.innerHTML=''; div.appendChild(c);
+      });
+    });
+  }
+})();
+</script>
+</body>
+</html>
